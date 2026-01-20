@@ -31,7 +31,7 @@ build-backend = "setuptools.build_meta"
 Homepage = "https://github.com/purarue/pipx_isolate"
 
 [project.optional-dependencies]
-testing = ["flake8", "mypy", "pytest"]
+testing = ["flake8", "mypy"]
 
 [tool.mypy]
 pretty = true
