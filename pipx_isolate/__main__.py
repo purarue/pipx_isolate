@@ -58,7 +58,9 @@ def add_metadata(path: str) -> None:
             colored_lines.append(" ".join(cl))
     click.echo("".join(colored_lines))
 
-    packages = click.prompt(f"{os.path.basename(path)}: enter packages to add to metadata:").strip()
+    packages = click.prompt(
+        f"{os.path.basename(path)}: enter packages to add to metadata:"
+    ).strip()
     cmd = [which("uv"), "add", "--script", path, *packages.split()]
     if packages:
         click.echo(f"Running {' '.join(cmd)}", err=True)
