@@ -122,7 +122,7 @@ def install(path: str, pipx_run_arguments: Sequence[str]) -> None:
         w.write(wrapper)
     os.chmod(target, 0o755)
 
-    click.echo(f"Wrote to {click.style(target, fg="green")}")
+    click.echo(f"Wrote to {click.style(target, fg='green')}")
 
 
 if __name__ == "__main__":
