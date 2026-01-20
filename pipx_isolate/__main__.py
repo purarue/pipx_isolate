@@ -44,10 +44,10 @@ def add_metadata(path: str) -> None:
     # TODO: use ast module to parse possible remote packages
     path = resolve_local_path(path)
     with open(path, "r") as f:
-        contents = f.readlines()
+        lines = f.readlines()
     colored_lines = []
-    for f in contents:
-        words = f.split(" ")
+    for line in lines:
+        words = line.split(" ")
         if "import" in words:
             cl = []
             for w in words:
