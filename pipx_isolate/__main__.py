@@ -29,8 +29,17 @@ def which(cmd: str) -> str:
 
 
 def resolve_local_path(path: str) -> str:
+    search_dirs: str | None = None
+    search_in = os.environ.get("PATH")
+
+    # remove pipx_isolate bin dir from search path so we don't self-loop
+    # and call the wrapper script itself
+    if search_in is not None:
+        filtered_dirs = [p for p in search_in.split(":") if p != bin_dir]
+        search_dirs = ":".join(filtered_dirs)
+
     if not os.path.exists(path):
-        if installed := shutil.which(path):
+        if installed := shutil.which(path, path=search_dirs):
             path = installed
     if not os.path.exists(path):
         click.echo(f"Could not find {path} locally or in your $PATH", err=True)
@@ -94,6 +103,8 @@ def install(path: str, pipx_run_arguments: Sequence[str]) -> None:
 
     path = resolve_local_path(path)
 
+    assert bin_dir not in path, f"found pipx_isolate/bin dir in script path: {path}"
+
     os.makedirs(bin_dir, exist_ok=True)
 
     pipx_path = which("pipx")
@@ -110,7 +121,7 @@ def install(path: str, pipx_run_arguments: Sequence[str]) -> None:
         *[shlex.quote(p) for p in pipx_run_arguments],
         "--path",
         shlex.quote(path),
-        "$@",
+        '"$@"',
     ]
 
     wrapper = f"""#!/bin/sh
