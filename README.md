@@ -43,6 +43,14 @@ This way, if you ever update the metadata at the top, `pipx` picks up the new ch
 export PATH="$HOME/.local/share/pipx_isolate/bin:$PATH"
 ```
 
+To find/install all the scripts with inline script metadata, I run a command like this:
+
+```bash
+rg -l -e '/// script' -e 'dependences\s*=\s*' -0 | xargs -0 -I{} sh -c 'test -x "{}" && echo "{}"' | parallel pipx_isolate install
+```
+
+See [`rg`](https://github.com/BurntSushi/ripgrep) and [`parallel`](https://www.gnu.org/software/parallel/)
+
 ## Installation
 
 Requires `python3.10+`
