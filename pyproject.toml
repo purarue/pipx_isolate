@@ -1,6 +1,6 @@
 [project]
 name = "pipx_isolate"
-version = "0.1.0"
+version = "0.1.1"
 description = "a pipx script installer supporting inline metadata for python scripts"
 readme = "README.md"
 license = "MIT"

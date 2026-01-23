@@ -59,7 +59,7 @@ Requires `python3.10+`
 To install with pip, run:
 
 ```
-pip install git+https://github.com/purarue/pipx_isolate
+pip install pipx_isolate
 ```
 
 ## Usage
