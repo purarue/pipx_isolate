@@ -139,7 +139,7 @@ def install(path: str, pipx_run_arguments: Sequence[str], run: bool) -> None:
         w.write(wrapper)
     os.chmod(target, 0o755)
 
-    click.echo(f"Wrote to {click.style(target, fg='green')}")
+    click.echo(f"Installed {shlex.quote(path)} to {shlex.quote(target)}")
 
 
 if __name__ == "__main__":
