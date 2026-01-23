@@ -32,7 +32,7 @@ Running `pipx_isolate install <name>` looks up the name of the script in your `$
 
 ```
 #!/bin/sh
-exec /home/astrid/.local/bin/pipx run --path /full/path/to/name "$@"
+exec /home/username/.local/bin/pipx run --path /full/path/to/name "$@"
 ```
 
 This way, if you ever update the metadata at the top, `pipx` picks up the new changes, and runs it with the correct dependencies in a virtual environment.
