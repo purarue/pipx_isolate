@@ -1,4 +1,5 @@
 import os
+import sys
 import shlex
 import shutil
 from urllib.parse import urlsplit
@@ -21,10 +22,17 @@ def main() -> None:
     pass
 
 
-def which(cmd: str) -> str:
+def which(cmd: str, prompt_to_install: bool = False) -> str:
     if found := shutil.which(cmd):
         return found
     click.secho(f"Could not find {cmd} in your $PATH", err=True, fg="red")
+    if prompt_to_install:
+        install_cmd = [sys.executable, "-m", "pip", "install", "uv"]
+        if click.confirm(f"Run {' '.join(install_cmd)} to install?"):
+            subprocess.Popen(install_cmd).wait()
+            installed_path = shutil.which(cmd)
+            assert installed_path is not None
+            return installed_path
     raise click.Abort()
 
 
@@ -70,7 +78,13 @@ def add_metadata(path: str) -> None:
     packages = click.prompt(
         f"{os.path.basename(path)}: enter packages to add to metadata"
     ).strip()
-    cmd = [which("uv"), "add", "--script", path, *packages.split()]
+    cmd = [
+        which("uv", prompt_to_install=True),
+        "add",
+        "--script",
+        path,
+        *packages.split(),
+    ]
     if packages:
         click.echo(f"Running {' '.join(cmd)}", err=True)
         subprocess.Popen(cmd).wait()

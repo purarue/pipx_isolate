@@ -36,6 +36,7 @@ exec /home/username/.local/bin/pipx run --path /full/path/to/name "$@"
 ```
 
 This way, if you ever update the metadata at the top, `pipx` picks up the new changes, and runs it with the correct dependencies in a virtual environment.
+If you want to pass arguments to `pipx run` in the generated script, you can do so like: `pipx_isolate install <file> --run --no-cache`
 
 `pipx_isolate install` by default creates a `bin` directory at `~/.local/share/pipx_isolate/bin/` so in order to call the wrapper scripts instead of the original, you should update your `$PATH` to put that directory near the front of your `$PATH`:
 
