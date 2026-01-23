@@ -44,7 +44,7 @@ def resolve_local_path(path: str) -> str:
     if not os.path.exists(path):
         click.echo(f"Could not find {path} locally or in your $PATH", err=True)
         raise click.Abort()
-    return path
+    return os.path.abspath(path)
 
 
 @main.command(short_help="add inline metadata to a script")
@@ -79,7 +79,9 @@ def add_metadata(path: str) -> None:
 @main.command(
     short_help="install script", context_settings=dict(ignore_unknown_options=True)
 )
-@click.option("--run", default=False, is_flag=True, help="run the script during install")
+@click.option(
+    "--run", default=False, is_flag=True, help="run the script during install"
+)
 @click.argument("PATH")
 @click.argument("PIPX_RUN_ARGUMENTS", required=False, nargs=-1)
 def install(path: str, pipx_run_arguments: Sequence[str], run: bool) -> None:
