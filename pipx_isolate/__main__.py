@@ -79,9 +79,10 @@ def add_metadata(path: str) -> None:
 @main.command(
     short_help="install script", context_settings=dict(ignore_unknown_options=True)
 )
+@click.option("--run", default=False, is_flag=True, help="run the script during install")
 @click.argument("PATH")
 @click.argument("PIPX_RUN_ARGUMENTS", required=False, nargs=-1)
-def install(path: str, pipx_run_arguments: Sequence[str]) -> None:
+def install(path: str, pipx_run_arguments: Sequence[str], run: bool) -> None:
     maybe_url = urlsplit(path)
     name: str | None = None
     if maybe_url.scheme == "https":
@@ -108,13 +109,14 @@ def install(path: str, pipx_run_arguments: Sequence[str]) -> None:
     os.makedirs(bin_dir, exist_ok=True)
 
     pipx_path = which("pipx")
-    args = [pipx_path, "run", *list(pipx_run_arguments), path, "--help"]
-    click.echo(f"Running {' '.join(args)}", err=True)
-    proc = subprocess.Popen(args, stdin=subprocess.PIPE)
-    # send something to stdin and close, so this terminates if its waiting
-    # for something through STDIN
-    proc.communicate()
-    proc.wait()
+    if run:
+        args = [pipx_path, "run", *list(pipx_run_arguments), path, "--help"]
+        click.echo(f"Running {' '.join(args)}", err=True)
+        proc = subprocess.Popen(args, stdin=subprocess.PIPE)
+        # send something to stdin and close, so this terminates if its waiting
+        # for something through STDIN
+        proc.communicate()
+        proc.wait()
 
     parts = [
         "exec",
