@@ -108,7 +108,7 @@ def install(path: str, pipx_run_arguments: Sequence[str]) -> None:
     os.makedirs(bin_dir, exist_ok=True)
 
     pipx_path = which("pipx")
-    args = [pipx_path, "run", *list(pipx_run_arguments), path]
+    args = [pipx_path, "run", *list(pipx_run_arguments), path, "--", "--help"]
     click.echo(f"Running {' '.join(args)}", err=True)
     proc = subprocess.Popen(args, stdin=subprocess.PIPE)
     # send something to stdin and close, so this terminates if its waiting

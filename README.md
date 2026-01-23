@@ -35,6 +35,8 @@ Running `pipx_isolate install <name>` looks up the name of the script in your `$
 exec /home/username/.local/bin/pipx run --path /full/path/to/name "$@"
 ```
 
+Note: to install this calls `pipx run` which _does_ mean it runs the script, it does so like `script-name --help`.
+
 This way, if you ever update the metadata at the top, `pipx` picks up the new changes, and runs it with the correct dependencies in a virtual environment.
 
 `pipx_isolate install` by default creates a `bin` directory at `~/.local/share/pipx_isolate/bin/` so in order to call the wrapper scripts instead of the original, you should update your `$PATH` to put that directory near the front of your `$PATH`:
